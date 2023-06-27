@@ -6,7 +6,7 @@ void edgb_KS_func(double X[NDIM], double edgb_KS[NDIM][NDIM])
   double sth, cth, c2t, c4t, s2t, rho2, ep2, ep4;
   double r, th;
 
-  bl_coord(X, &r, &th); // its calling bl coordinates? 
+  bl_coord(X, &r, &th); // its calling bl coordinates
 
   cth = cos(th);
   sth = sin(th);
@@ -120,7 +120,7 @@ void edgb_BL_func(double r, double th, double edgb_BL[NDIM][NDIM])
   ep2 = a*a; 
   ep4 = ep2*ep2;
   
-  edgb_BL[0][0] = 2*pow(r,4) - pow(r,5))/pow(r,5) - (2*ep2*c2t)/pow(r,3) + (2*ep4*c4t)/pow(r,5) + zeta*(-1./30870000.*(-823200000.*pow(r,8.) + 197568000.*pow(r,9.) + 135828000.*pow(r,10.) + 
+  edgb_BL[0][0] = (2*pow(r,4) - pow(r,5))/pow(r,5) - (2*ep2*c2t)/pow(r,3) + (2*ep4*c4t)/pow(r,5) + zeta*(-1./30870000.*(-823200000.*pow(r,8.) + 197568000.*pow(r,9.) + 135828000.*pow(r,10.) + 
           267540000.*pow(r,11.) + 10290000.*pow(r,12.))/pow(r,15.) - (ep2*(2469600000*pow(r,4) - 2562896000*pow(r,5) - 561540000*pow(r,6) + 
           430710000*pow(r,7) + 787418800*pow(r,8) + 220638600*pow(r,9) - 99672720*pow(r,10) - 124514880*pow(r,11) - 57629880*pow(r,12) - 7408800000*pow(r,4)*c2t + 
           6865488000*pow(r,5)*c2t + 13275276000*pow(r,6)*c2t - 3527118000*pow(r,7)*c2t - 3411836400*pow(r,8)*c2t - 1911121800*pow(r,9)*c2t + 138494160*pow(r,10)*c2t + 
@@ -133,12 +133,12 @@ void edgb_BL_func(double r, double th, double edgb_BL[NDIM][NDIM])
           36504300000*pow(r,3)*c4t - 93614354400*pow(r,4)*c4t + 21344827140*pow(r,5)*c4t + 14578372340*pow(r,6)*c4t + 
           5039005790*pow(r,7)*c4t - 905649600*pow(r,8)*c4t - 764010420*pow(r,9)*c4t - 506651100*pow(r,10)*c4t))/(30870000*pow(r,15))) ;
 
-  edgb_BL[0][3] = (-2*epsilon*s2t)/r + (2*epsilon*ep2*c2t*s2t)/pow(r,3) - (2*epsilon*ep2*ep2*c4t*s2t)/pow(r,5) + zeta*(((-27165600000*pow(r,8) + 9779616000*pow(r,9) + 6112260000*pow(r,10) + 
-          9507960000*pow(r,11) + 611226000*pow(r,12))*epsilon*s2t)/(1018710000*pow(r,15)) + (epsilon*ep2*(81496800000*pow(r,4) - 
+  edgb_BL[0][3] = (-2*a*s2t)/r + (2*a*ep2*c2t*s2t)/pow(r,3) - (2*a*ep2*ep2*c4t*s2t)/pow(r,5) + zeta*(((-27165600000*pow(r,8) + 9779616000*pow(r,9) + 6112260000*pow(r,10) + 
+          9507960000*pow(r,11) + 611226000*pow(r,12))*a*s2t)/(1018710000*pow(r,15)) + (a*ep2*(81496800000*pow(r,4) - 
           84575568000*pow(r,5) - 18530820000*pow(r,6) + 14213430000*pow(r,7) + 25282580400*pow(r,8) + 7077978600*pow(r,9) - 2939539680*pow(r,10) - 
           3757085640*pow(r,11) - 1761023880*pow(r,12) - 244490400000*pow(r,4)*c2t + 280892304000*pow(r,5)*c2t + 412005132000*pow(r,6)*c2t + 60519690000*pow(r,7)*
           c2t - 40753297200*pow(r,8)*c2t - 33450490920*pow(r,9)*c2t - 699652800*pow(r,10)*c2t + 5202628200*pow(r,11)*c2t + 7277054400*pow(r,12)*c2t)*
-          s2t)/(1018710000*pow(r,15)) + (epsilon*ep2*ep2*(-380318400000 + 1072769544000*r + 244737477600*pow(r,2) - 
+          s2t)/(1018710000*pow(r,15)) + (a*ep2*ep2*(-380318400000 + 1072769544000*r + 244737477600*pow(r,2) - 
           29938015800*pow(r,3) - 7667615340*pow(r,4) + 20191993668*pow(r,5) + 19405851234*pow(r,6) - 5564719986*pow(r,7) - 4295984814*pow(r,8) - 
           1611965940*pow(r,9) - 289290630*pow(r,10) - 665034700*pow(r,11) + 430455575*pow(r,12) + 3178375200000*c2t - 3492952848000*r*c2t - 
           831196212000*pow(r,2)*c2t + 956920734000*pow(r,3)*c2t + 553351906800*pow(r,4)*c2t - 36480832080*pow(r,5)*c2t - 165779867400*pow(r,6)*
