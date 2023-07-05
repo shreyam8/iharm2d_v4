@@ -189,3 +189,5 @@ inline double invert(double *m, double *invOut)
 
   return det;
 }
+
+// Invert function takes in 1D array row major style. How can I pass a 4x4 matrix into it and assign it to another 4x4 ??? 

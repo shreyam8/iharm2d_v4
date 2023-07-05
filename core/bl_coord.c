@@ -13,6 +13,7 @@
 // TODO cleanup/minimize this file, it duplicates some of coord.c
 
 #include "bl_coord.h"
+#include "dcs.h" 
 
 // Sets up grid in BL coordinates
 void blgset(int i, int j, struct of_geom *geom)
@@ -57,12 +58,18 @@ void bl_gcov_func(double r, double th, double gcov[NDIM][NDIM])
   DD = 1. - 2./r + a2/r2;
   mu = 1. + a2*cth*cth/r2;
 
+  #if THEORY == GR 
   gcov[0][0] = -(1. - 2./(r*mu));
   gcov[0][3] = -2.*a*s2/(r*mu);
   gcov[3][0] = gcov[0][3];
   gcov[1][1] = mu/DD;
   gcov[2][2] = r2*mu;
   gcov[3][3] = r2*sth*sth*(1. + a2/r2 + 2.*a2*s2/(r2*r*mu));
+
+  #elif THEORY == DCS 
+  dcs_BL_func(r,th,gcov);  // why does it not recognize r, th and gcov ?? 
+
+  #endif 
 
 }
 
@@ -106,19 +113,36 @@ void bl_to_ks(double X[NDIM], double ucon_bl[NDIM], double ucon_ks[NDIM])
   bl_coord(X, &r, &th);
 
   double trans[NDIM][NDIM];
+  double temp[NDIM][NDIM];
+
   DLOOP2 trans[mu][nu] = 0.;
   DLOOP1 trans[mu][mu] = 1.;
+
+  DLOOP2 temp[mu][nu] = 0.;
+  DLOOP1 temp[mu][mu] = 1.;
+
+  #if THEORY == GR 
   trans[0][1] = 2.*r/(r*r - 2.*r + a*a);
   trans[3][1] = a/(r*r - 2.*r + a*a);
+
+  #elif THEORY == DCS 
+  dcs_trans(r,th,temp) ;  // temp contains the trans matrix 
+  invert(&temp[0][0],&trans[0][0]) ; // inverts temp and assigns to trans 
+  
+  // SEND THE ADDRESS OF THE FIRST ELEMENT TO INVERT. 
+
+  #endif 
 
   DLOOP1 ucon_ks[mu] = 0.;
   DLOOP2 ucon_ks[mu] += trans[mu][nu]*ucon_bl[nu];
 }
 
+// SO bl_to_ks gets the transformation matrix and ucon_ks depending on theory.
+
 // Convert Boyer-Lindquist four-velocity to MKS 3-velocity
 void coord_transform(struct GridGeom *G, struct FluidState *S, int i, int j)
 {
-  double X[NDIM], r, th, ucon[NDIM], trans[NDIM][NDIM], tmp[NDIM];
+  double X[NDIM], r, th, ucon[NDIM], trans[NDIM][NDIM], tmp[NDIM]; // tmp not needed? 
   double AA, BB, CC, discr;
   double alpha, gamma, beta[NDIM];
   struct blgeom;
@@ -131,6 +155,8 @@ void coord_transform(struct GridGeom *G, struct FluidState *S, int i, int j)
   ucon[1] = S->P[U1][j][i];
   ucon[2] = S->P[U2][j][i];
   ucon[3] = S->P[U3][j][i];
+
+  bl_gcov_func(r,th,blgeom.gcov) ; // assigns gcov with the matrix based on theory
 
   AA = blgeom.gcov[0][0];
   BB = 2.*(blgeom.gcov[0][1]*ucon[1] +
@@ -145,33 +171,17 @@ void coord_transform(struct GridGeom *G, struct FluidState *S, int i, int j)
           blgeom.gcov[2][3]*ucon[2]*ucon[3]);
 
   discr = BB*BB - 4.*AA*CC;
-  ucon[0] = (-BB - sqrt(discr))/(2.*AA);
+
   // This is ucon in BL coords
+  ucon[0] = (-BB - sqrt(discr))/(2.*AA); 
 
-  // transform to Kerr-Schild
-  // Make transform matrix
-  memset(trans, 0, 16*sizeof(double));
-  for (int mu = 0; mu < NDIM; mu++) {
-    trans[mu][mu] = 1.;
-  }
-  trans[0][1] = 2.*r/(r*r - 2.*r + a*a);
-  trans[3][1] = a/(r*r - 2.*r + a*a);
-
-  // Transform ucon
-  for (int mu = 0; mu < NDIM; mu++) {
-    tmp[mu] = 0.;
-  }
-  for (int mu = 0; mu < NDIM; mu++) {
-    for (int nu = 0; nu < NDIM; nu++) {
-      tmp[mu] += trans[mu][nu]*ucon[nu];
-    }
-  }
-  for (int mu = 0; mu < NDIM; mu++) {
-    ucon[mu] = tmp[mu];
-  }
+  // Make transform matrix & transform to Kerr-Schild 
 
   // This is ucon in KS coords
+  bl_to_ks(X,ucon,ucon); // takes in ucon in BL and makes it KS ? 
 
+
+// ...............................................................................
   // Transform to MKS or MMKS
   double invtrans[NDIM][NDIM];
   set_dxdX(X, invtrans);
@@ -194,4 +204,5 @@ void coord_transform(struct GridGeom *G, struct FluidState *S, int i, int j)
   S->P[U1][j][i] = ucon[1] + beta[1]*gamma/alpha;
   S->P[U2][j][i] = ucon[2] + beta[2]*gamma/alpha;
   S->P[U3][j][i] = ucon[3] + beta[3]*gamma/alpha;
+
 }

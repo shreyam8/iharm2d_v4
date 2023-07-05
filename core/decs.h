@@ -39,6 +39,16 @@
 // Code version
 #define VERSION "iharm2d_v4-alpha-1.0"
 
+
+// THEORY OF GRAVITY 
+#define GR   (0)
+#define DCS  (1)
+#define EDGB (2)
+
+#ifndef THEORY
+#define THEORY (GR)
+#endif 
+
 // Number of active zones on each MPI process
 #define N1       (N1TOT)
 #define N2       (N2TOT)

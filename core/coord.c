@@ -26,6 +26,7 @@
  */
 
 #include "decs.h"
+#include "dcs.h"
 
 double thG_of_X(const double X[NDIM]);
 void thJ_of_X(const double X[NDIM], double *y, double* thJ);
@@ -183,6 +184,7 @@ void gcov_func(double X[NDIM], double gcov[NDIM][NDIM])
   s2 = sth*sth;
   rho2 = r*r + a*a*cth*cth;
 
+  #if THEORY == GR
   gcov[0][0] = -1. + 2.*r/rho2;
   gcov[0][1] = 2.*r/rho2;
   gcov[0][3] = -2.*a*r*s2/rho2;
@@ -196,6 +198,11 @@ void gcov_func(double X[NDIM], double gcov[NDIM][NDIM])
   gcov[3][0] = gcov[0][3];
   gcov[3][1] = gcov[1][3];
   gcov[3][3] = s2*(rho2 + a*a*s2*(1. + 2.*r/rho2));
+
+  #elif THEORY == DCS
+  dcs_KS_func(X,gcov) ;
+
+  #endif 
 
   // Apply coordinate transformation to code coordinates X
   double dxdX[NDIM][NDIM];
