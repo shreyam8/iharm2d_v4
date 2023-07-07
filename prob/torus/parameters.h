@@ -12,7 +12,7 @@
 #define N1TOT 128
 #define N2TOT 128
 
-#define THEORY DCS 
+#define THEORY EDGB
 #define zeta 0.1
 
 // Metric: 'MINKOWSKI' or 'MKS'

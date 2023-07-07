@@ -202,6 +202,9 @@ void gcov_func(double X[NDIM], double gcov[NDIM][NDIM])
   #elif THEORY == DCS
   dcs_KS_func(X,gcov) ;
 
+  #elif THEORY == EDGB 
+  edgb_KS_func(X,gcov) ; 
+
   #endif 
 
   // Apply coordinate transformation to code coordinates X

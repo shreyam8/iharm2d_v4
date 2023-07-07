@@ -69,6 +69,9 @@ void bl_gcov_func(double r, double th, double gcov[NDIM][NDIM])
   #elif THEORY == DCS 
   dcs_BL_func(r,th,gcov);  // why does it not recognize r, th and gcov ?? 
 
+  #elif THEORY == EDGB 
+  edgb_BL_func(r,th,gcov); 
+
   #endif 
 
 }
@@ -128,8 +131,10 @@ void bl_to_ks(double X[NDIM], double ucon_bl[NDIM], double ucon_ks[NDIM])
   #elif THEORY == DCS 
   dcs_trans(r,th,temp) ;  // temp contains the trans matrix 
   invert(&temp[0][0],&trans[0][0]) ; // inverts temp and assigns to trans 
-  
-  // SEND THE ADDRESS OF THE FIRST ELEMENT TO INVERT. 
+
+  #elif THEORY == EDGB 
+  edgb_trans(r,th,temo) ;
+  invert(&temp[0][0],&trans[0][0]) ; 
 
   #endif 
 
@@ -195,6 +200,10 @@ void coord_transform(struct GridGeom *G, struct FluidState *S, int i, int j)
 
   #elif THEORY == DCS
   dcs_trans(r,th,temp) ;  // temp contains the trans matrix 
+  invert(&temp[0][0],&trans[0][0]) ;
+
+  #elif THEORY == EDGB 
+  edgb_trans(r,th,temp) ;
   invert(&temp[0][0],&trans[0][0]) ;
   
   #endif
