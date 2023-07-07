@@ -142,7 +142,7 @@ void bl_to_ks(double X[NDIM], double ucon_bl[NDIM], double ucon_ks[NDIM])
 // Convert Boyer-Lindquist four-velocity to MKS 3-velocity
 void coord_transform(struct GridGeom *G, struct FluidState *S, int i, int j)
 {
-  double X[NDIM], r, th, ucon[NDIM], trans[NDIM][NDIM], tmp[NDIM]; // tmp not needed? 
+  double X[NDIM], r, th, ucon[NDIM], trans[NDIM][NDIM], tmp[NDIM], temp[NDIM][NDIM]; // tmp not needed? 
   double AA, BB, CC, discr;
   double alpha, gamma, beta[NDIM];
   struct blgeom;
@@ -151,6 +151,9 @@ void coord_transform(struct GridGeom *G, struct FluidState *S, int i, int j)
   coord(i, j, CENT, X);
   bl_coord(X, &r, &th);
   blgset(i, j, &blgeom);
+
+  // CHATGPT
+  memset(&blgeom, 0, sizeof(struct of_geom));
 
   ucon[1] = S->P[U1][j][i];
   ucon[2] = S->P[U2][j][i];
@@ -178,8 +181,36 @@ void coord_transform(struct GridGeom *G, struct FluidState *S, int i, int j)
   // Make transform matrix & transform to Kerr-Schild 
 
   // This is ucon in KS coords
-  bl_to_ks(X,ucon,ucon); // takes in ucon in BL and makes it KS ? 
+  //bl_to_ks(X,ucon,ucon); // takes in ucon in BL and makes it KS ? 
+  memset(trans, 0, 16*sizeof(double));
+  memset(temp, 0, 16*sizeof(double));
+  for (int mu = 0; mu < NDIM; mu++) {
+    trans[mu][mu] = 1.;
+    temp[mu][mu] = 1. ;
+  }
 
+  #if THEORY == GR
+  trans[0][1] = 2.*r/(r*r - 2.*r + a*a);
+  trans[3][1] = a/(r*r - 2.*r + a*a);
+
+  #elif THEORY == DCS
+  dcs_trans(r,th,temp) ;  // temp contains the trans matrix 
+  invert(&temp[0][0],&trans[0][0]) ;
+  
+  #endif
+  
+  // Transform ucon
+  for (int mu = 0; mu < NDIM; mu++) {
+    tmp[mu] = 0.;
+  }
+  for (int mu = 0; mu < NDIM; mu++) {
+    for (int nu = 0; nu < NDIM; nu++) {
+      tmp[mu] += trans[mu][nu]*ucon[nu];
+    }
+  }
+  for (int mu = 0; mu < NDIM; mu++) {
+    ucon[mu] = tmp[mu];
+  }
 
 // ...............................................................................
   // Transform to MKS or MMKS

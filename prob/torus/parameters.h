@@ -13,12 +13,12 @@
 #define N2TOT 128
 
 #define THEORY DCS 
-#define zeta (0.1)
+#define zeta 0.1
 
 // Metric: 'MINKOWSKI' or 'MKS'
 #define METRIC MKS
 // Set 'DEREFINE_POLES' to 1 for FMKS
-#define DEREFINE_POLES 1
+#define DEREFINE_POLES 0
 
 
 // Floors:
