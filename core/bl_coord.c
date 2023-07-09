@@ -14,6 +14,7 @@
 
 #include "bl_coord.h"
 #include "dcs.h" 
+#include "edgb.h"
 
 // Sets up grid in BL coordinates
 void blgset(int i, int j, struct of_geom *geom)

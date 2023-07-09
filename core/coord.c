@@ -27,6 +27,7 @@
 
 #include "decs.h"
 #include "dcs.h"
+#include "edgb.h"
 
 double thG_of_X(const double X[NDIM]);
 void thJ_of_X(const double X[NDIM], double *y, double* thJ);
