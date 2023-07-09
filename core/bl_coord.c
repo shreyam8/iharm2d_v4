@@ -133,7 +133,7 @@ void bl_to_ks(double X[NDIM], double ucon_bl[NDIM], double ucon_ks[NDIM])
   invert(&temp[0][0],&trans[0][0]) ; // inverts temp and assigns to trans 
 
   #elif THEORY == EDGB 
-  edgb_trans(r,th,temo) ;
+  edgb_trans(r,th,temp) ;
   invert(&temp[0][0],&trans[0][0]) ; 
 
   #endif 
