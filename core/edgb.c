@@ -3,6 +3,7 @@
 //#include "defs.h"
 #include "decs.h"
 
+#if THEORY == EDGB
 void edgb_KS_func(double X[NDIM], double edgb_KS[NDIM][NDIM])
 {
   memset(edgb_KS, 0, NDIM*NDIM*sizeof(double));
@@ -278,4 +279,4 @@ void edgb_trans(double r, double th, double edgb_T[NDIM][NDIM]) {
     
 // ROW 4 ENDS HERE
 
-
+#endif

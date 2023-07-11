@@ -12,8 +12,8 @@
 #define N1TOT 128
 #define N2TOT 128
 
-#define THEORY GR
-#define zeta 0
+#define THEORY (GR)
+//#define zeta 0
 
 // Metric: 'MINKOWSKI' or 'MKS'
 #define METRIC MKS

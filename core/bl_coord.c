@@ -13,8 +13,12 @@
 // TODO cleanup/minimize this file, it duplicates some of coord.c
 
 #include "bl_coord.h"
-#include "dcs.h" 
+#if THEORY == DCS
+#include "dcs.h"
+#endif
+#if THEORY == EDGB
 #include "edgb.h"
+# endif
 
 // Sets up grid in BL coordinates
 void blgset(int i, int j, struct of_geom *geom)

@@ -52,6 +52,9 @@ void set_core_params()
 {
   set_param("tf", &tf);
   set_param("dt", &dt);
+#if ((THEORY == DCS) || (THEORY == EDGB))
+  set_param("zeta", &zeta);
+#endif
 #if METRIC == MINKOWSKI
   set_param("x1Min", &x1Min);
   set_param("x1Max", &x1Max);

@@ -33,6 +33,10 @@ int istart, istop, jstart, jstop;
 int nstep;
 int is_restart;
 
+#if ((THEORY == DCS) || (THEORY == EDGB))
+double zeta;
+#endif
+
 // fluid dumps
 double DTd;
 double DTf;

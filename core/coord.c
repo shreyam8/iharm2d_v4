@@ -26,8 +26,12 @@
  */
 
 #include "decs.h"
+#if THEORY == DCS
 #include "dcs.h"
+#endif
+#if THEORY == EDGB
 #include "edgb.h"
+# endif
 
 double thG_of_X(const double X[NDIM]);
 void thJ_of_X(const double X[NDIM], double *y, double* thJ);
