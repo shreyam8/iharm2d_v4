@@ -49,6 +49,10 @@
 #define THEORY (GR)
 #endif 
 
+#if ((THEORY == DCS) || (THEORY == EDGB))
+double zeta;
+#endif
+
 // Number of active zones on each MPI process
 #define N1       (N1TOT)
 #define N2       (N2TOT)
