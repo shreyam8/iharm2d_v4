@@ -11,6 +11,9 @@
 
 [dbl] u_jitter = 4.0e-02
 
+# GRAVITY THEORY
+[dbl] zeta = 0.
+
 # OUTPUT
 [dbl] DTd = 5.0
 [dbl] DTf = 10.0
