@@ -104,23 +104,7 @@ void edgb_KS_func(double X[NDIM], double edgb_KS[NDIM][NDIM])
     + 42*pow(r,8)*(-1863327 - 67980150*c2t + 104977900*c4t) + 28*pow(r,5)*(-14247879 - 109560360*c2t + 137751665*c4t) 
     + 42*pow(r,6)*(30654807 - 316973820*c2t + 358739630*c4t) + 6*pow(r,7)*(-25024421 - 1143700950*c2t + 1667207055*c4t)))/(92610000*pow(r,12)));
 
-  // Apply coordinate transformation to code coordinates X
-  double dxdX[NDIM][NDIM];
-  set_dxdX(X, dxdX);
-
-  double edgb_KS_old[NDIM][NDIM]; 
-  memcpy(edgb_KS_old, edgb_KS, NDIM*NDIM*sizeof(double));
-  memset(edgb_KS, 0, NDIM*NDIM*sizeof(double));
-
-  for (int mu = 0; mu < NDIM; mu++) {
-    for (int nu = 0; nu < NDIM; nu++) {
-      for (int lam = 0; lam < NDIM; lam++) {
-        for (int kap = 0; kap < NDIM; kap++) {
-          edgb_KS[mu][nu] += edgb_KS_old[lam][kap]*dxdX[lam][mu]*dxdX[kap][nu];
-        }
-      }
-    }
-  }
+  // Removed KS --> FMKS transformation from here 
 }
 
 void edgb_BL_func(double r, double th, double edgb_BL[NDIM][NDIM])
