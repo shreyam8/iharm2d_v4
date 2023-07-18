@@ -252,6 +252,11 @@ extern GridInt fflag;
                               GLOBAL VARIABLES SECTION
 ---------------------------------------------------------------------------------*/
 
+// THEORY STUFF 
+#if THEORY == DCS
+extern double zeta;
+#endif 
+
 // Physics parameters
 extern double a;
 extern double gam;
@@ -363,6 +368,12 @@ extern double poly_norm, poly_xt, poly_alpha, mks_smooth;
 /*---------------------------------------------------------------------------------
                                 FUNCTION DECLARATIONS
 ---------------------------------------------------------------------------------*/
+#if THEORY == DCS 
+void dcs_KS_func(double X[NDIM], double dcs_KS[NDIM][NDIM]);
+void dcs_BL_func(double r, double th, double dcs_BL[NDIM][NDIM]);
+void dcs_trans(double r, double th, double dcs_T[NDIM][NDIM]);
+#endif 
+
 // bl_coord.c
 void bl_coord(const double X[NDIM], double *r, double *th);
 

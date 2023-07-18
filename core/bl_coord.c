@@ -18,7 +18,7 @@
 #endif
 #if THEORY == EDGB
 #include "edgb.h"
-# endif
+#endif
 
 // Sets up grid in BL coordinates
 void blgset(int i, int j, struct of_geom *geom)
@@ -204,12 +204,10 @@ void coord_transform(struct GridGeom *G, struct FluidState *S, int i, int j)
   trans[3][1] = a/(r*r - 2.*r + a*a);
 
   #elif THEORY == DCS
-  dcs_trans(r,th,temp) ;  // temp contains the trans matrix 
-  invert(&temp[0][0],&trans[0][0]) ;
+  dcs_trans(r,th,trans) ;  // temp contains the trans matrix 
 
   #elif THEORY == EDGB 
-  edgb_trans(r,th,temp) ;
-  invert(&temp[0][0],&trans[0][0]) ;
+  edgb_trans(r,th,trans) ;
   
   #endif
   
