@@ -90,25 +90,8 @@ void dcs_KS_func(double X[NDIM], double dcs_KS[NDIM][NDIM])
         47085980.*c4t) + 3.*pow(r,6.)*(-6926429. - 37012920.*c2t + 88687520.*c4t) + pow(r,7.)*(-696903. - 73328880.*c2t + 119241500.*
         c4t) + 4.*pow(r,4.)*(-9548811. - 215787012.*c2t + 299057380.*c4t)))/(40642560.*pow(r,11.))) ;
 
-  // Apply coordinate transformation to code coordinates X
-  double dxdX[NDIM][NDIM];
-  set_dxdX(X, dxdX);
-
-  // Transforming from KS --> FMKS coordinates 
-  // still slightly doubted about this part .... 
-  double dcs_KS_old[NDIM][NDIM]; 
-  memcpy(dcs_KS_old, dcs_KS, NDIM*NDIM*sizeof(double));
-  memset(dcs_KS, 0, NDIM*NDIM*sizeof(double));
-
-  for (int mu = 0; mu < NDIM; mu++) {
-    for (int nu = 0; nu < NDIM; nu++) {
-      for (int lam = 0; lam < NDIM; lam++) {
-        for (int kap = 0; kap < NDIM; kap++) {
-          dcs_KS[mu][nu] += dcs_KS_old[lam][kap]*dxdX[lam][mu]*dxdX[kap][nu];
-        }
-      }
-    }
-  }
+// Removed KS --> FMKS transformation here
+  
 }
 
 //---------------------------------------------------------------------------------------------------------------------------------------
