@@ -49,9 +49,11 @@
 #define THEORY (GR)
 #endif 
 
-#if ((THEORY == DCS) || (THEORY == EDGB))
-double zeta;
+
+#if ((THEORY == DCS) || (THEORY==EDGB))
+double zeta; 
 #endif
+
 
 // Number of active zones on each MPI process
 #define N1       (N1TOT)
@@ -253,9 +255,9 @@ extern GridInt fflag;
 ---------------------------------------------------------------------------------*/
 
 // THEORY STUFF 
-#if THEORY == DCS
+#if ((THEORY == DCS) || (THEORY == EDGB))
 extern double zeta;
-#endif 
+#endif
 
 // Physics parameters
 extern double a;
@@ -368,10 +370,17 @@ extern double poly_norm, poly_xt, poly_alpha, mks_smooth;
 /*---------------------------------------------------------------------------------
                                 FUNCTION DECLARATIONS
 ---------------------------------------------------------------------------------*/
+// THEORY STUFF 
 #if THEORY == DCS 
 void dcs_KS_func(double X[NDIM], double dcs_KS[NDIM][NDIM]);
 void dcs_BL_func(double r, double th, double dcs_BL[NDIM][NDIM]);
 void dcs_trans(double r, double th, double dcs_T[NDIM][NDIM]);
+#endif 
+
+#if (THEORY == EDGB)
+void edgb_KS_func(double X[NDIM], double edgb_KS[NDIM][NDIM]);
+void edgb_BL_func(double r, double th, double edgb_BL[NDIM][NDIM]);
+void edgb_trans(double r, double th, double edgb_T[NDIM][NDIM]);
 #endif 
 
 // bl_coord.c

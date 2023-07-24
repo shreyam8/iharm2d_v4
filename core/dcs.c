@@ -1,9 +1,4 @@
-// a is global
-// zeta is global 
 
-// refer to coord.c
-
-//#include "defs.h"
 #include "decs.h"
 
 #if THEORY == DCS

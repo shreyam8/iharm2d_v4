@@ -9,16 +9,15 @@
 
 // Global resolution
 // Since there's no MPI, NiTOT==Ni
-#define N1TOT 128
-#define N2TOT 128
+#define N1TOT 256
+#define N2TOT 256
 
-#define THEORY (GR)
-//#define zeta 0
+#define THEORY GR
 
 // Metric: 'MINKOWSKI' or 'MKS'
 #define METRIC MKS
 // Set 'DEREFINE_POLES' to 1 for FMKS
-#define DEREFINE_POLES 0
+#define DEREFINE_POLES 1
 
 
 // Floors:

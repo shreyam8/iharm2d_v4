@@ -13,12 +13,7 @@
 // TODO cleanup/minimize this file, it duplicates some of coord.c
 
 #include "bl_coord.h"
-#if THEORY == DCS
-#include "dcs.h"
-#endif
-#if THEORY == EDGB
-#include "edgb.h"
-#endif
+#include "decs.h"
 
 // Sets up grid in BL coordinates
 void blgset(int i, int j, struct of_geom *geom)
@@ -36,6 +31,7 @@ void blgset(int i, int j, struct of_geom *geom)
   geom->g = bl_gdet_func(r, th);
   bl_gcov_func(r, th, geom->gcov);
   bl_gcon_func(r, th, geom->gcon);
+
 }
 
 // Computes gdet in BL coordinates
@@ -72,7 +68,7 @@ void bl_gcov_func(double r, double th, double gcov[NDIM][NDIM])
   gcov[3][3] = r2*sth*sth*(1. + a2/r2 + 2.*a2*s2/(r2*r*mu));
 
   #elif THEORY == DCS 
-  dcs_BL_func(r,th,gcov);  // why does it not recognize r, th and gcov ?? 
+  dcs_BL_func(r,th,gcov);  
 
   #elif THEORY == EDGB 
   edgb_BL_func(r,th,gcov); 
@@ -121,25 +117,19 @@ void bl_to_ks(double X[NDIM], double ucon_bl[NDIM], double ucon_ks[NDIM])
   bl_coord(X, &r, &th);
 
   double trans[NDIM][NDIM];
-  double temp[NDIM][NDIM];
 
   DLOOP2 trans[mu][nu] = 0.;
   DLOOP1 trans[mu][mu] = 1.;
-
-  DLOOP2 temp[mu][nu] = 0.;
-  DLOOP1 temp[mu][mu] = 1.;
 
   #if THEORY == GR 
   trans[0][1] = 2.*r/(r*r - 2.*r + a*a);
   trans[3][1] = a/(r*r - 2.*r + a*a);
 
   #elif THEORY == DCS 
-  dcs_trans(r,th,temp) ;  // temp contains the trans matrix 
-  invert(&temp[0][0],&trans[0][0]) ; // inverts temp and assigns to trans 
+  dcs_trans(r,th,trans) ;  // temp contains the trans matrix // inverts temp and assigns to trans 
 
   #elif THEORY == EDGB 
-  edgb_trans(r,th,temp) ;
-  invert(&temp[0][0],&trans[0][0]) ; 
+  edgb_trans(r,th,trans) ;
 
   #endif 
 
@@ -162,7 +152,7 @@ void coord_transform(struct GridGeom *G, struct FluidState *S, int i, int j)
   bl_coord(X, &r, &th);
   blgset(i, j, &blgeom);
 
-  // CHATGPT
+  
   memset(&blgeom, 0, sizeof(struct of_geom));
 
   ucon[1] = S->P[U1][j][i];
@@ -193,10 +183,9 @@ void coord_transform(struct GridGeom *G, struct FluidState *S, int i, int j)
   // This is ucon in KS coords
   //bl_to_ks(X,ucon,ucon); // takes in ucon in BL and makes it KS ? 
   memset(trans, 0, 16*sizeof(double));
-  memset(temp, 0, 16*sizeof(double));
+
   for (int mu = 0; mu < NDIM; mu++) {
     trans[mu][mu] = 1.;
-    temp[mu][mu] = 1. ;
   }
 
   #if THEORY == GR
@@ -224,7 +213,6 @@ void coord_transform(struct GridGeom *G, struct FluidState *S, int i, int j)
     ucon[mu] = tmp[mu];
   }
 
-// ...............................................................................
   // Transform to MKS or MMKS
   double invtrans[NDIM][NDIM];
   set_dxdX(X, invtrans);

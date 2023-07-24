@@ -16,7 +16,7 @@
  *         the values of X1,X2 there;
  *      -- the locations are defined by :
  *          -----------------------
- *          |                     |
+ *          |                     |RM 
  *          |                     |
  *          |FACE1   CENT         |
  *          |                     |
@@ -25,13 +25,7 @@
  *
  */
 
-#include "decs.h"
-#if THEORY == DCS
-#include "dcs.h"
-#endif
-#if THEORY == EDGB
-#include "edgb.h"
-# endif
+#include "decs.h" 
 
 double thG_of_X(const double X[NDIM]);
 void thJ_of_X(const double X[NDIM], double *y, double* thJ);
@@ -145,6 +139,7 @@ inline void set_dxdX(double X[NDIM], double dxdX[NDIM][NDIM])
   dxdX[1][1] = exp(X[1]);
   dxdX[2][2] = M_PI - (hslope - 1.)*M_PI*cos(2.*M_PI*X[2]);
   dxdX[3][3] = 1.;
+
 #elif METRIC == MKS && DEREFINE_POLES
   dxdX[0][0] = 1.;
   dxdX[1][1] = exp(X[1]);
@@ -190,6 +185,7 @@ void gcov_func(double X[NDIM], double gcov[NDIM][NDIM])
   rho2 = r*r + a*a*cth*cth;
 
   #if THEORY == GR
+  bl_coord(X, &r, &th);
   gcov[0][0] = -1. + 2.*r/rho2;
   gcov[0][1] = 2.*r/rho2;
   gcov[0][3] = -2.*a*r*s2/rho2;
@@ -210,7 +206,8 @@ void gcov_func(double X[NDIM], double gcov[NDIM][NDIM])
   #elif THEORY == EDGB 
   edgb_KS_func(X,gcov) ; 
 
-  #endif 
+  #endif //THEORY
+
 
   // Apply coordinate transformation to code coordinates X
   double dxdX[NDIM][NDIM];
@@ -290,6 +287,7 @@ inline void set_grid_loc(struct GridGeom *G, int i, int j, int loc)
 
   coord(i, j, loc, X);
   gcov_func(X, gcov);
+
   G->gdet[loc][j][i] = gcon_func(gcov, gcon);
   for (int mu = 0; mu < NDIM; mu++) {
     for (int nu = 0; nu < NDIM; nu++) {
@@ -298,7 +296,9 @@ inline void set_grid_loc(struct GridGeom *G, int i, int j, int loc)
     }
   }
   G->lapse[loc][j][i] = 1./sqrt(-G->gcon[loc][0][0][j][i]);
+
 }
+
 
 // Initializes flags and fails to zero
 void zero_arrays()
@@ -309,3 +309,4 @@ void zero_arrays()
     fail_save[j][i] = 0;
   }
 }
+

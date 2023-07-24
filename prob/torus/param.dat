@@ -1,7 +1,7 @@
 ### RUNTIME PARAMETERS FOR EHT COMPARISON PROBLEM ###
 
 # COORDINATES
-[dbl] tf = 1000.0
+[dbl] tf = 4000.0
 [dbl] dt = 1.0e-06
 [dbl] Rout = 50.0
 
@@ -12,7 +12,7 @@
 [dbl] u_jitter = 4.0e-02
 
 # GRAVITY THEORY
-[dbl] zeta = 0.
+[dbl] zeta = 0.05
 
 # OUTPUT
 [dbl] DTd = 5.0
@@ -35,7 +35,7 @@
 [int] mad_type = 0
 [dbl] beta = 100.0
 
-[dbl] a = 0.9375
+[dbl] a = 0.5
 [dbl] hslope = 0.3
 
 # What did the acorn say when it grew up? Gee, I'm a tree!
